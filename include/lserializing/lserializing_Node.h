@@ -202,7 +202,8 @@ public:
 	/** Traverses all parent nodes until a %node is found that does not have a parent.
 		If this %node doesn't have a parent, returns a reference to this %node.
 	 */
-	Node& getRoot() const noexcept;
+	Node& getRoot() noexcept;
+	const Node& getRoot() const noexcept;
 
 	///@}
 
@@ -301,10 +302,10 @@ public:
 		If you attempt to access a datatype that this Node isn't currently storing, an exception will be thrown.
 	 */
 	template <ObjectType Type>
-	DataType<ObjectType>& get()
+	DataType<Type>& get()
 	{
-		static_assert (! std::is_same_v<Type, Null>);
-		return get<DataType<ObjectType>>();
+		static_assert (! std::is_same_v<Type, NullType>);
+		return get<DataType<Type>>();
 	}
 
 	///@}

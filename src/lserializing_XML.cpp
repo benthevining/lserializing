@@ -57,11 +57,6 @@ public:
 	[[nodiscard]] std::unique_ptr<Printer> createPrinter (bool shouldPrettyPrint) const noexcept final;
 
 	[[nodiscard]] std::unique_ptr<Schema> createSchemaFrom (const Node& data) const noexcept final;
-
-	[[nodiscard]] text::CharacterEncoding* getDefaultCharacterEncoding() const noexcept final
-	{
-		return nullptr;
-	}
 };
 
 LSERIAL_NO_EXPORT static const KnownFormats::Register<XMLFormat> xml_init;

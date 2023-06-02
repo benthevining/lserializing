@@ -16,7 +16,6 @@
 #include <string>
 #include <cmath>
 #include <sstream>
-#include <limes_core.h>
 #include <stdexcept>
 #include "lserializing/lserializing_Node.h"
 #include "lserializing/lserializing_SerializableData.h"
@@ -36,6 +35,7 @@ Node::Node (ObjectType typeToUse) noexcept
 		case (ObjectType::Boolean) : data = false; return;
 		case (ObjectType::Array) : data = Array {}; return;
 		case (ObjectType::Object) : data = Object {}; return;
+		case (ObjectType::Null): return;
 	}
 }
 
@@ -183,7 +183,7 @@ Node& Node::addChild (const Node& childNode, std::string_view childName)
 	throw std::runtime_error { "Cannot addChild() to Node that is not an Array or an Object" };
 }
 
-Node& Node::addChildInternal (std::string_view& childName, ObjectType childType)
+Node& Node::addChildInternal (std::string_view childName, ObjectType childType)
 {
 	if (isArray())
 	{
@@ -432,7 +432,7 @@ bool Node::isNull() const noexcept
 	return type == ObjectType::Null;
 }
 
-Node& Node::addChildNull (const std::string_view& childName)
+Node& Node::addChildNull (std::string_view childName)
 {
 	return addChildInternal (childName, ObjectType::Null);
 }
@@ -442,7 +442,22 @@ Node* Node::getParent() const noexcept
 	return parent;
 }
 
-Node& Node::getRoot() const noexcept
+Node& Node::getRoot() noexcept
+{
+	if (parent == nullptr)
+		return *this;
+
+	auto* curr = parent;
+
+	while (curr->parent != nullptr)
+	{
+		curr = curr->parent;
+	}
+
+	return *curr;
+}
+
+const Node& Node::getRoot() const noexcept
 {
 	if (parent == nullptr)
 		return *this;
@@ -491,7 +506,7 @@ Node Node::createNumber (double value)
 	return result;
 }
 
-Node Node::createString (const std::string_view& value)
+Node Node::createString (std::string_view value)
 {
 	auto result = Node { ObjectType::String };
 

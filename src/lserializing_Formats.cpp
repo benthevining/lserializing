@@ -50,16 +50,4 @@ std::unique_ptr<Schema> Format::createSchemaFrom (const Node& /*data*/) const no
 	return nullptr;
 }
 
-const text::EscapeCharacterSequence& Format::getEscapeSequence() const noexcept
-{
-	static const text::EscapeCharacterSequence emptySequence;
-
-	return emptySequence;
-}
-
-text::CharacterEncoding* Format::getDefaultCharacterEncoding() const noexcept
-{
-	return nullptr;
-}
-
 }  // namespace limes::serializing

@@ -54,11 +54,6 @@ public:
 	[[nodiscard]] Node parse (std::string_view string) const final;
 
 	[[nodiscard]] std::unique_ptr<Printer> createPrinter (bool shouldPrettyPrint) const noexcept final;
-
-	[[nodiscard]] text::CharacterEncoding* getDefaultCharacterEncoding() const noexcept final
-	{
-		return nullptr;
-	}
 };
 
 LSERIAL_NO_EXPORT static const KnownFormats::Register<INIFormat> ini_init;
@@ -206,7 +201,7 @@ std::unique_ptr<Printer> INIFormat::createPrinter ([[maybe_unused]] bool shouldP
 			return {};
 		}
 
-		std::string printString (const std::string_view& /*string*/) final
+		std::string printString (std::string_view /*string*/) final
 		{
 			return {};
 		}
@@ -248,5 +243,3 @@ std::unique_ptr<Printer> INIFormat::createPrinter ([[maybe_unused]] bool shouldP
 
 
 }  // namespace serializing
-
-LIMES_END_NAMESPACE

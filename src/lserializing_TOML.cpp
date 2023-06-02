@@ -54,11 +54,6 @@ public:
 	[[nodiscard]] Node parse (std::string_view string) const final;
 
 	[[nodiscard]] std::unique_ptr<Printer> createPrinter (bool shouldPrettyPrint) const noexcept final;
-
-	[[nodiscard]] text::CharacterEncoding* getDefaultCharacterEncoding() const noexcept final
-	{
-		return nullptr;
-	}
 };
 
 LSERIAL_NO_EXPORT static const KnownFormats::Register<TOMLFormat> toml_init;

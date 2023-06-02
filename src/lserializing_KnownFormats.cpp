@@ -122,7 +122,7 @@ std::string KnownFormats::convert (std::string_view string, std::string_view new
 	return convert (string, getFormatWithName (newFormatName), origFormat);
 }
 
-std::string KnownFormats::convert (std::string_view& string, const Format* newFormat, const Format* origFormat) const
+std::string KnownFormats::convert (std::string_view string, const Format* newFormat, const Format* origFormat) const
 {
 	if (newFormat == nullptr)
 		throw FormatNotFoundError { "KnownFormats::convert - target format not specified" };

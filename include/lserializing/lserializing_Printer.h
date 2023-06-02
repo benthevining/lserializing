@@ -67,7 +67,7 @@ private:
 	virtual std::string printNumber (double) = 0;
 
 	/** Must print the given string. */
-	virtual std::string printString (const std::string_view&) = 0;
+	virtual std::string printString (std::string_view) = 0;
 
 	/** Must print the given boolean. */
 	virtual std::string printBoolean (bool) = 0;
