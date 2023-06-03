@@ -1,0 +1,8 @@
+<map id="lserializing_Schema.h" name="lserializing_Schema.h">
+<area shape="rect" id="Node000001" title="This file defines the serializing::Schema class." alt="" coords="5,5,154,31"/>
+<area shape="rect" id="Node000002" href="$lserializing_8h.html" title="The main header for the limes_serializing library." alt="" coords="33,168,126,193"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="66,45,51,80,48,99,51,119,61,145,73,166,69,168,56,147,46,120,43,99,46,78,61,43"/>
+<area shape="rect" id="Node000003" href="$lserializing___serializing_format_8h.html" title="This file defines the serializing::Format class." alt="" coords="61,79,210,120"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="99,42,124,77,120,80,94,45"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="115,133,90,169,86,166,111,130"/>
+</map>

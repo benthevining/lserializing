@@ -1,0 +1,18 @@
+<map id="lserializing_SerializableData.h" name="lserializing_SerializableData.h">
+<area shape="rect" id="Node000001" title="This file defines the SerializableData class." alt="" coords="5,5,162,46"/>
+<area shape="rect" id="Node000002" href="$lserializing_8h.html" title="The main header for the limes_serializing library." alt="" coords="117,330,210,356"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="74,61,61,107,53,164,54,224,61,253,72,281,84,296,98,309,130,327,128,332,95,313,80,299,68,283,56,255,49,225,47,163,56,106,69,59"/>
+<area shape="rect" id="Node000003" href="$lserializing___node_8h.html" title="This file defines the Node class." alt="" coords="98,94,229,120"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="116,55,153,91,149,95,112,59"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="146,133,111,181,95,211,83,242,79,262,83,281,93,296,107,308,136,327,133,332,103,312,89,299,78,283,73,262,78,241,90,209,107,178,141,130"/>
+<area shape="rect" id="Node000004" href="$lserializing___enums_8h.html" title="Utilities for serializing enum values." alt="" coords="93,249,234,275"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="166,134,166,248,161,248,161,134"/>
+<area shape="rect" id="Node000005" href="$lserializing___printer_8h.html" title="This file defines the serializing::Printer class." alt="" coords="203,168,340,193"/>
+<area shape="poly" id="edge6_Node000003_Node000005" title=" " alt="" coords="196,126,255,165,252,169,193,130"/>
+<area shape="rect" id="Node000006" href="$lserializing___serializing_format_8h.html" title="This file defines the serializing::Format class." alt="" coords="309,241,458,282"/>
+<area shape="poly" id="edge10_Node000003_Node000006" title=" " alt="" coords="244,114,302,132,330,146,355,166,368,183,377,203,385,240,380,242,372,205,363,186,351,170,327,151,300,137,243,119"/>
+<area shape="poly" id="edge5_Node000004_Node000002" title=" " alt="" coords="166,289,166,329,161,329,161,289"/>
+<area shape="poly" id="edge7_Node000005_Node000002" title=" " alt="" coords="272,208,265,245,248,283,221,312,190,332,187,327,217,308,244,281,260,244,267,207"/>
+<area shape="poly" id="edge8_Node000005_Node000006" title=" " alt="" coords="302,200,357,239,354,243,299,204"/>
+<area shape="poly" id="edge9_Node000006_Node000002" title=" " alt="" coords="316,290,198,332,196,327,314,285"/>
+</map>
