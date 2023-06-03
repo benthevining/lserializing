@@ -19,8 +19,8 @@
 #include <stdexcept>
 #include "lserializing/lserializing_Node.h"
 #include "lserializing/lserializing_SerializableData.h"
-#include "lserializing/lserializing_SerializingFormat.h"
-#include "lserializing/lserializing_KnownFormats.h"
+//#include "lserializing/lserializing_SerializingFormat.h"
+//#include "lserializing/lserializing_KnownFormats.h"
 
 namespace limes::serializing
 {
@@ -98,7 +98,42 @@ Node& Node::operator[] (std::string_view childName)
 	throw std::runtime_error { "Child node could not be found!" };
 }
 
+const Node& Node::operator[] (std::string_view childName) const
+{
+	if (! isObject())
+		throw std::runtime_error { "Cannot call operator[string] on Node that is not an Object" };
+
+	for (auto& pair : std::get<Object> (data))
+		if (pair.first == childName)  // cppcheck-suppress useStlAlgorithm
+			return pair.second;
+
+	throw std::runtime_error { "Child node could not be found!" };
+}
+
+Node& Node::operator[] (const char* childName)
+{
+	return this->operator[](std::string_view { childName });
+}
+
+const Node& Node::operator[] (const char* childName) const
+{
+	return this->operator[](std::string_view { childName });
+}
+
 Node& Node::operator[] (size_t idx)
+{
+	if (! isArray())
+		throw std::runtime_error { "Cannot call operator[size_t] on Node that is not an Array" };
+
+	auto& array = std::get<Array> (data);
+
+	if (idx >= static_cast<size_t> (array.size()))
+		throw std::out_of_range { "Array index out of range!" };
+
+	return array[idx];
+}
+
+const Node& Node::operator[] (size_t idx) const
 {
 	if (! isArray())
 		throw std::runtime_error { "Cannot call operator[size_t] on Node that is not an Array" };
@@ -271,9 +306,21 @@ Node& Node::operator= (std::string_view value)
 	return *this;
 }
 
+Node& Node::operator= (const char* value)
+{
+	return *this = std::string_view { value };
+}
+
 Node& Node::addChildString (std::string_view childName)
 {
 	return addChildInternal (childName, ObjectType::String);
+}
+
+Node& Node::addChildString (std::string_view value, std::string_view childName)
+{
+	auto& child = addChildString (childName);
+	child.getString() = value;
+	return child;
 }
 
 std::string& Node::getString()
@@ -472,6 +519,11 @@ const Node& Node::getRoot() const noexcept
 	return *curr;
 }
 
+bool Node::isRoot() const noexcept
+{
+	return ! hasParent();
+}
+
 bool Node::hasParent() const noexcept
 {
 	return parent != nullptr;
@@ -538,10 +590,12 @@ size_t hash<limes::serializing::Node>::operator() (const limes::serializing::Nod
 {
 	namespace Serial = limes::serializing;
 
-	return hash<string> {}(Serial::KnownFormats::get()
-							   .getFormatForString (Serial::formats::JSON)
-							   ->createPrinter (false)
-							   ->print (n));
+//	return hash<string> {}(Serial::KnownFormats::get()
+//							   .getFormatForString (Serial::formats::JSON)
+//							   ->createPrinter (false)
+//							   ->print (n));
+
+	return 0UL;
 }
 
 size_t hash<limes::serializing::SerializableData>::operator() (const limes::serializing::SerializableData& d) const noexcept

@@ -119,7 +119,9 @@ using DataType = std::conditional_t<Type == ObjectType::Number, double,
 
 	@see ObjectType, DataType, NodeConverter
 
-	@todo refactor -- don't need to store ObjectType, just query which type the variant is holding?
+	@todo operator ==, !=
+	@todo createArray(), createObject() functions?
+	@todo Iterator for object/array nodes
  */
 class LSERIAL_EXPORT Node final
 {
@@ -157,6 +159,10 @@ public:
 		with the specified name exists.
 	 */
 	Node& operator[] (std::string_view childName);
+	const Node& operator[] (std::string_view childName) const;
+
+	Node& operator[] (const char* childName);
+	const Node& operator[] (const char* childName) const;
 
 	/** For Array nodes, returns the child %node at the given index in the array.
 
@@ -165,6 +171,7 @@ public:
 		@throws std::out_of_range An exception is thrown if the requested index is out of range of the array.
 	 */
 	Node& operator[] (size_t idx);
+	const Node& operator[] (size_t idx) const;
 
 	///@}
 
@@ -204,6 +211,9 @@ public:
 	 */
 	Node& getRoot() noexcept;
 	const Node& getRoot() const noexcept;
+
+	/** Returns true if this node does not have a parent node. */
+	bool isRoot() const noexcept;
 
 	///@}
 
@@ -304,7 +314,7 @@ public:
 	template <ObjectType Type>
 	DataType<Type>& get()
 	{
-		static_assert (! std::is_same_v<Type, NullType>);
+		static_assert (Type != ObjectType::Null);
 		return get<DataType<Type>>();
 	}
 
@@ -324,6 +334,7 @@ public:
 		@throws std::runtime_error An exception will be thrown if this Node is not a String.
 	 */
 	Node& operator= (std::string_view value);
+	Node& operator= (const char* value);
 
 	/** Assigns this %node to a new boolean value.
 
@@ -385,7 +396,8 @@ public:
 
 		@see addChild()
 	 */
-	Node& addChildString (std::string_view childName = "");
+	Node& addChildString (std::string_view childName);
+	Node& addChildString (std::string_view value, std::string_view childName);
 
 	/** Adds a new child %node that holds a boolean value.
 		Child nodes can only be added to Array or Object nodes.
@@ -551,6 +563,8 @@ private:
 
 	@see Node, SerializableData
 	@ingroup limes_serializing
+
+	@todo provide NodeConverters for basic types: all arithmetic types, bool, strings, vectors, maps
  */
 template <typename Type>
 struct LSERIAL_EXPORT NodeConverter final
@@ -594,7 +608,7 @@ struct LSERIAL_EXPORT NodeConverter<Type> final
 template <typename T>
 concept CanSerialize = ImplementsSerializableData<T> || requires (const Node& n, T& t)
 {
-	{ NodeConverter<T>::serialize() }; // TODO: verify return type is a Node
+	{ NodeConverter<T>::serialize (t) } -> IsNode;
 	{ NodeConverter<T>::deserialize (n, t) };
 };
 

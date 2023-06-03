@@ -31,7 +31,7 @@ add_executable (lserial_tests)
 
 set_target_properties (lserial_tests PROPERTIES MACOSX_BUNDLE OFF)
 
-target_sources (lserial_tests PRIVATE)
+target_sources (lserial_tests PRIVATE Node.cpp Concepts.cpp Enums.cpp)
 
 target_link_libraries (lserial_tests PRIVATE Catch2::Catch2WithMain limes::lserializing)
 
@@ -42,5 +42,5 @@ catch_discover_tests (
 		--warn NoAssertions
 		--order rand
 		--verbosity high
-	TEST_PREFIX "Limes.hashes.unit.")
+	TEST_PREFIX "Limes.serializing.unit.")
 # cmake-format: on

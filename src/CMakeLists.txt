@@ -12,12 +12,8 @@
 
 target_sources (
 	lserializing
-	PRIVATE lserializing_Formats.cpp
-			lserializing_INI.cpp
-			lserializing_JSON.cpp
-			lserializing_KnownFormats.cpp
+	PRIVATE # lserializing_Formats.cpp # lserializing_INI.cpp lserializing_JSON.cpp
+			# lserializing_KnownFormats.cpp
 			lserializing_Node.cpp
-			lserializing_Printer.cpp
-			lserializing_TOML.cpp
-			lserializing_XML.cpp
-			lserializing_YAML.cpp)
+	# lserializing_Printer.cpp lserializing_TOML.cpp lserializing_XML.cpp lserializing_YAML.cpp
+	)

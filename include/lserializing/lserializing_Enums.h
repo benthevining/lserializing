@@ -43,9 +43,9 @@ namespace enums
 template <typename T>
 concept Enum = std::is_enum_v<T>;
 
-/** True for any integral type. */
+/** True for any arithmetic type. */
 template <typename T>
-concept Integral = std::is_integral_v<T>;
+concept Arithmetic = std::is_arithmetic_v<T>;
 
 /** Evaluates to the underlying storage type of the given enum type. */
 template <Enum Type>
@@ -56,7 +56,7 @@ using UnderlyingType = std::underlying_type_t<Type>;
 
 	@see toEnum()
  */
-template <Integral To, Enum From>
+template <Arithmetic To, Enum From>
 [[nodiscard]] LSERIAL_EXPORT constexpr To fromEnum (From value) noexcept
 {
 	return static_cast<To> (static_cast<UnderlyingType<From>> (value));
@@ -67,7 +67,7 @@ template <Integral To, Enum From>
 
 	@see fromEnum()
  */
-template <Enum To, Integral From>
+template <Enum To, Arithmetic From>
 [[nodiscard]] LSERIAL_EXPORT constexpr To toEnum (From value) noexcept
 {
 	return static_cast<To> (static_cast<UnderlyingType<To>> (value));
