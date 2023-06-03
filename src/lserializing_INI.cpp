@@ -60,6 +60,15 @@ LSERIAL_NO_EXPORT static const KnownFormats::Register<INIFormat> ini_init;
 
 /*-----------------------------------------------------------------------------------------------------------------------*/
 
+constexpr static inline std::string_view getNewline()
+{
+#if defined(_WIN32) || defined(WIN32)
+	return "\r\n";
+#else
+	return "\n";
+#endif
+}
+
 Node INIFormat::parse (std::string_view string) const
 {
 	class Parser final
@@ -101,7 +110,7 @@ Node INIFormat::parse (std::string_view string) const
 			// INI comments start with ;
 			if (popIf (';'))
 			{
-				current.jumpToAfter (text::getNewline());
+				current.jumpToAfter (getNewline());
 				skipWhitespace();
 			}
 		}

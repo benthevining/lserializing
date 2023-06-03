@@ -15,10 +15,12 @@
 #include <cctype>
 #include <cstdlib>
 #include <string_view>
+#include <string>
 #include <sstream>
 #include <stdexcept>
 #include <cmath>
 #include <memory>
+#include <vector>
 #include "lserializing/lserializing_SerializingFormat.h"
 #include "lserializing/lserializing_KnownFormats.h"
 #include "lserializing/lserializing_Node.h"
@@ -409,6 +411,82 @@ Node JSONFormat::parse (std::string_view string) const
 
 /*-----------------------------------------------------------------------------------------------------------------------*/
 
+static constexpr auto QUOTE_CHAR = '\'';
+
+static inline std::string quoteString (std::string_view input)
+{
+	std::string copy { input };
+
+	if (! copy.starts_with (QUOTE_CHAR))
+		copy.insert (0, std::string { QUOTE_CHAR });
+
+	if (! copy.ends_with (QUOTE_CHAR))
+		copy += QUOTE_CHAR;
+
+	return copy;
+}
+
+static inline std::string unquoteString (std::string_view input)
+{
+	std::string copy { input };
+
+	auto dropFirstChars = [&copy](size_t numChars)
+	{
+		copy = copy.substr (numChars, copy.length());
+	};
+
+	if (copy.starts_with ("\\\""))
+		dropFirstChars (2);
+	else if (copy.starts_with ('"'))
+		dropFirstChars (1);
+	else if (copy.starts_with ("\\\'"))
+		dropFirstChars (2);
+	else if (copy.starts_with ('\''))
+		dropFirstChars (1);
+
+	auto dropLastChars = [&copy](size_t numChars)
+	{
+		for (auto i = 0UL; i < numChars; ++i)
+		{
+			if (copy.empty())
+				return;
+
+			copy.pop_back();
+		}
+	};
+
+	if (copy.ends_with ("\\\""))
+		dropLastChars (2);
+	else if (copy.ends_with ('"'))
+		dropLastChars (1);
+	else if (copy.ends_with ("\\\'"))
+		dropLastChars (2);
+	else if (copy.ends_with ('\''))
+		dropLastChars (1);
+
+	return copy;
+}
+
+static inline std::string joinStrings (const std::vector<std::string>& strings, std::string_view glue)
+{
+	if (strings.size() == 1)
+		return strings[0];
+
+	std::stringstream stream;
+
+	for (auto i = 0UL; i < strings.size(); ++i)
+	{
+		const auto& string = strings[i];
+
+		stream << string;
+
+		if ((i + 1 < strings.size()) && (! string.ends_with (glue)))
+			stream << glue;
+	}
+
+	return stream.str();
+}
+
 std::unique_ptr<Printer> JSONFormat::createPrinter ([[maybe_unused]] bool shouldPrettyPrint) const noexcept
 {
 	class JSONPrinter final : public Printer
@@ -423,7 +501,7 @@ std::unique_ptr<Printer> JSONFormat::createPrinter ([[maybe_unused]] bool should
 		std::string printNumber (double number) final
 		{
 			if (std::isfinite (number))
-				return text::unquoted (std::to_string (number));
+				return unquoteString (std::to_string (number));
 
 			if (std::isnan (number))
 				return "\"NaN\"";
@@ -513,7 +591,7 @@ std::unique_ptr<Printer> JSONFormat::createPrinter ([[maybe_unused]] bool should
 			for (const auto& element : array)
 				strings.emplace_back (print (element));	 // cppcheck-suppress useStlAlgorithm
 
-			return "[ " + text::join (strings, ", ") + " ]";
+			return "[ " + joinStrings (strings, ", ") + " ]";
 		}
 
 		std::string printObject (const Object& object) final
@@ -522,14 +600,14 @@ std::unique_ptr<Printer> JSONFormat::createPrinter ([[maybe_unused]] bool should
 
 			for (const auto& element : object)
 			{
-				auto str = text::quoted (element.first);
+				auto str = quoteString (element.first);
 				str += ':';
 				str += print (element.second);
 
 				strings.emplace_back (str);
 			}
 
-			return "{ " + text::join (strings, ", ") + " }";
+			return "{ " + joinStrings (strings, ", ") + " }";
 		}
 
 		void arrayBegin() final

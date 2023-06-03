@@ -162,6 +162,21 @@ Node XMLFormat::parse (std::string_view /*string*/) const
 
 /*-----------------------------------------------------------------------------------------------------------------------*/
 
+static inline std::string quoteString (std::string_view input)
+{
+	std::string copy { input };
+
+	static constexpr auto QUOTE_CHAR = '\'';
+
+	if (! copy.starts_with (QUOTE_CHAR))
+		copy.insert (0, std::string { QUOTE_CHAR });
+
+	if (! copy.ends_with (QUOTE_CHAR))
+		copy += QUOTE_CHAR;
+
+	return copy;
+}
+
 std::unique_ptr<Printer> XMLFormat::createPrinter ([[maybe_unused]] bool shouldPrettyPrint) const noexcept
 {
 	class XMLPrinter final : public Printer
@@ -175,12 +190,12 @@ std::unique_ptr<Printer> XMLFormat::createPrinter ([[maybe_unused]] bool shouldP
 
 		std::string printNumber (double number) final
 		{
-			return text::quoted (std::to_string (number));
+			return quoteString (std::to_string (number));
 		}
 
 		std::string printString (std::string_view string) final
 		{
-			return text::quoted (string);
+			return quoteString (string);
 		}
 
 		std::string printBoolean (bool boolean) final
