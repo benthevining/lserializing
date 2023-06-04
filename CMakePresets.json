@@ -5,6 +5,7 @@
     "patch": 0
   },
   "include": [
+    "cmake/presets/android.json",
     "cmake/presets/clang.json",
     "cmake/presets/emscripten.json",
     "cmake/presets/gcc.json",

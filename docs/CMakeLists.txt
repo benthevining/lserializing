@@ -33,6 +33,11 @@ if (NOT DOXYGEN_FOUND)
 	return ()
 endif ()
 
+set (LSERIAL_DOC_TAGFILE "${CMAKE_CURRENT_LIST_DIR}/../doc/lserializing.tag"
+	 CACHE FILEPATH "Path where the Doxygen tagfile for lserializing will be generated")
+
+mark_as_advanced (LSERIAL_DOC_TAGFILE)
+
 file (GLOB headers LIST_DIRECTORIES false CONFIGURE_DEPENDS
 										  "${CMAKE_CURRENT_LIST_DIR}/../include/lserializing/*.h")
 
@@ -64,7 +69,7 @@ set (DOXYGEN_DOT_IMAGE_FORMAT svg)
 set (DOXYGEN_INTERACTIVE_SVG YES)
 set (DOXYGEN_USE_MATHJAX YES)
 set (DOXYGEN_USE_MDFILE_AS_MAINPAGE "${CMAKE_CURRENT_LIST_DIR}/../README.md")
-set (DOXYGEN_GENERATE_TAGFILE "${CMAKE_CURRENT_LIST_DIR}/../doc/lserializing.tag")
+set (DOXYGEN_GENERATE_TAGFILE "${LSERIAL_DOC_TAGFILE}")
 
 doxygen_add_docs (
 	lserial_docs ${headers} ${examples} "${DOXYGEN_USE_MDFILE_AS_MAINPAGE}" USE_STAMP_FILE
@@ -73,4 +78,4 @@ doxygen_add_docs (
 
 set_property (
 	TARGET lserial_docs APPEND PROPERTY ADDITIONAL_CLEAN_FILES "${DOXYGEN_OUTPUT_DIRECTORY}"
-										"${DOXYGEN_WARN_LOGFILE}")
+										"${DOXYGEN_WARN_LOGFILE}" "${DOXYGEN_GENERATE_TAGFILE}")
