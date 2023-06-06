@@ -18,7 +18,7 @@
 #define TAGS "[serializing][enums]"
 
 namespace serial = limes::serializing;
-namespace enums  = serial::enums;
+namespace enums	 = serial::enums;
 
 TEST_CASE ("Serializing enum values", TAGS)
 {

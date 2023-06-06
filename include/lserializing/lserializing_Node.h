@@ -90,10 +90,10 @@ struct LSERIAL_EXPORT NullType final
  */
 template <ObjectType Type>
 using DataType = std::conditional_t<Type == ObjectType::Number, double,
-												 std::conditional_t<Type == ObjectType::String, std::string,
-																	std::conditional_t<Type == ObjectType::Boolean, bool,
-																					   std::conditional_t<Type == ObjectType::Array, Array,
-																										  std::conditional_t<Type == ObjectType::Object, Object, NullType>>>>>;
+									std::conditional_t<Type == ObjectType::String, std::string,
+													   std::conditional_t<Type == ObjectType::Boolean, bool,
+																		  std::conditional_t<Type == ObjectType::Array, Array,
+																							 std::conditional_t<Type == ObjectType::Object, Object, NullType>>>>>;
 
 #pragma mark Node
 
@@ -158,10 +158,10 @@ public:
 		@throws std::runtime_error An exception is thrown if the node is not an Object, or if no child %node
 		with the specified name exists.
 	 */
-	Node& operator[] (std::string_view childName);
+	Node&		operator[] (std::string_view childName);
 	const Node& operator[] (std::string_view childName) const;
 
-	Node& operator[] (const char* childName);
+	Node&		operator[] (const char* childName);
 	const Node& operator[] (const char* childName) const;
 
 	/** For Array nodes, returns the child %node at the given index in the array.
@@ -170,7 +170,7 @@ public:
 
 		@throws std::out_of_range An exception is thrown if the requested index is out of range of the array.
 	 */
-	Node& operator[] (size_t idx);
+	Node&		operator[] (size_t idx);
 	const Node& operator[] (size_t idx) const;
 
 	///@}
@@ -209,7 +209,7 @@ public:
 	/** Traverses all parent nodes until a %node is found that does not have a parent.
 		If this %node doesn't have a parent, returns a reference to this %node.
 	 */
-	Node& getRoot() noexcept;
+	Node&		getRoot() noexcept;
 	const Node& getRoot() const noexcept;
 
 	/** Returns true if this node does not have a parent node. */
@@ -606,10 +606,13 @@ struct LSERIAL_EXPORT NodeConverter<Type> final
 	@see SerializableData, NodeConverter, ImplementsSerializableData
  */
 template <typename T>
-concept CanSerialize = ImplementsSerializableData<T> || requires (const Node& n, T& t)
-{
-	{ NodeConverter<T>::serialize (t) } -> IsNode;
-	{ NodeConverter<T>::deserialize (n, t) };
+concept CanSerialize = ImplementsSerializableData<T> || requires (const Node& n, T& t) {
+	{
+		NodeConverter<T>::serialize (t)
+	} -> IsNode;
+	{
+		NodeConverter<T>::deserialize (n, t)
+	};
 };
 
 }  // namespace limes::serializing
@@ -636,7 +639,7 @@ struct LSERIAL_EXPORT hash<limes::serializing::Node> final
 	@ingroup limes_serializing
 	@see SerializableData, Node
  */
-template<>
+template <>
 struct LSERIAL_EXPORT hash<limes::serializing::SerializableData> final
 {
 	size_t operator() (const limes::serializing::SerializableData& d) const noexcept;

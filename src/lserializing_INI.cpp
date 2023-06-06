@@ -251,4 +251,4 @@ std::unique_ptr<Printer> INIFormat::createPrinter ([[maybe_unused]] bool shouldP
 }
 
 
-}  // namespace serializing
+}  // namespace limes::serializing

@@ -23,7 +23,7 @@
 #define TAGS "[serializing][Node]"
 
 namespace serial = limes::serializing;
-using Node = serial::Node;
+using Node		 = serial::Node;
 using ObjectType = serial::ObjectType;
 
 static_assert (std::is_same_v<serial::DataType<ObjectType::Number>, double>);
@@ -253,12 +253,12 @@ TEST_CASE ("Node - querying children & parents", TAGS)
 	REQUIRE (&n.getRoot() == &n);
 
 	REQUIRE (n.getNumChildren() == 0UL);
-	REQUIRE (! n.hasChildWithName("foo"));
+	REQUIRE (! n.hasChildWithName ("foo"));
 
 	n.addChildNumber (36., "foo");
 
 	REQUIRE (n.getNumChildren() == 1UL);
-	REQUIRE (n.hasChildWithName("foo"));
+	REQUIRE (n.hasChildWithName ("foo"));
 
 	{
 		auto& child = n["foo"];
@@ -272,7 +272,7 @@ TEST_CASE ("Node - querying children & parents", TAGS)
 	n.addChildArray ("bar");
 
 	REQUIRE (n.getNumChildren() == 2UL);
-	REQUIRE (n.hasChildWithName("bar"));
+	REQUIRE (n.hasChildWithName ("bar"));
 
 	auto& array = n["bar"];
 

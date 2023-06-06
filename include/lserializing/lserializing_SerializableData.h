@@ -36,7 +36,7 @@ namespace limes::serializing
 
 class Node;
 
-template<typename T>
+template <typename T>
 concept IsNode = std::is_same_v<T, Node>;
 
 /** This class provides an interface for any C++ object that can be serialized to and from a Node.
@@ -70,10 +70,13 @@ public:
 	@ingroup serializing
  */
 template <typename T>
-concept ImplementsSerializableData = std::is_base_of_v<T, SerializableData> || requires (T a, const Node& n)
-{
-	{ a.serialize() } -> IsNode;
-	{ a.deserialize (n) };
+concept ImplementsSerializableData = std::is_base_of_v<T, SerializableData> || requires (T a, const Node& n) {
+	{
+		a.serialize()
+	} -> IsNode;
+	{
+		a.deserialize (n)
+	};
 };
 
 }  // namespace limes::serializing

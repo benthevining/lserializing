@@ -60,7 +60,7 @@ struct WrongReturnType final
 };
 
 static_assert (! serial::ImplementsSerializableData<WrongReturnType>);
-//static_assert (! serial::CanSerialize<WrongReturnType>);
+// static_assert (! serial::CanSerialize<WrongReturnType>);
 
 struct NotDirectlySerializable final
 {
@@ -68,7 +68,7 @@ struct NotDirectlySerializable final
 
 static_assert (! serial::ImplementsSerializableData<NotDirectlySerializable>);
 
-template<>
+template <>
 struct serial::NodeConverter<NotDirectlySerializable> final
 {
 	[[nodiscard]] static Node serialize (const NotDirectlySerializable&)

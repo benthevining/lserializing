@@ -430,7 +430,7 @@ static inline std::string unquoteString (std::string_view input)
 {
 	std::string copy { input };
 
-	auto dropFirstChars = [&copy](size_t numChars)
+	auto dropFirstChars = [&copy] (size_t numChars)
 	{
 		copy = copy.substr (numChars, copy.length());
 	};
@@ -444,7 +444,7 @@ static inline std::string unquoteString (std::string_view input)
 	else if (copy.starts_with ('\''))
 		dropFirstChars (1);
 
-	auto dropLastChars = [&copy](size_t numChars)
+	auto dropLastChars = [&copy] (size_t numChars)
 	{
 		for (auto i = 0UL; i < numChars; ++i)
 		{
