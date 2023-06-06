@@ -110,11 +110,12 @@
 #pragma once
 
 // IWYU pragma: begin_exports
-#include "./lserializing_Enums.h"
-// #include "./lserializing_KnownFormats.h"
-#include "./lserializing_Node.h"
-#include "./lserializing_Printer.h"
-#include "./lserializing_Schema.h"
-#include "lserializing_SerializableData.h"
-// #include "lserializing_SerializingFormat.h"
+#include "lserializing/lserializing_Version.h"
+#include "lserializing/lserializing_Enums.h"
+// #include "lserializing/lserializing_KnownFormats.h"
+#include "lserializing/lserializing_Node.h"
+#include "lserializing/lserializing_Printer.h"
+#include "lserializing/lserializing_Schema.h"
+#include "lserializing/lserializing_SerializableData.h"
+// #include "lserializing/lserializing_SerializingFormat.h"
 // IWYU pragma: end_exports

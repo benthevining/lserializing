@@ -1,0 +1,9 @@
+#pragma once
+
+#define LSERIAL_VERSION_MAJOR @lserializing_VERSION_MAJOR@
+
+#define LSERIAL_VERSION_MINOR @lserializing_VERSION_MINOR@
+
+#define LSERIAL_VERSION_PATCH @lserializing_VERSION_PATCH@
+
+#define LSERIAL_VERSION "@lserializing_VERSION@"

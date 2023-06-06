@@ -74,7 +74,9 @@ set (
 	include/lserializing/lserializing_SerializableData.h
 	include/lserializing/lserializing_SerializingFormat.h)
 
-set (export_header "${CMAKE_CURRENT_BINARY_DIR}/generated/lserializing/lserializing_Export.h")
+set (generated_headers_dir "${CMAKE_CURRENT_BINARY_DIR}/generated/lserializing")
+
+set (export_header "${generated_headers_dir}/lserializing_Export.h")
 
 include (GenerateExportHeader)
 
@@ -86,8 +88,13 @@ generate_export_header (
 	EXPORT_FILE_NAME "${export_header}")
 # cmake-format: on
 
+set (version_header "${generated_headers_dir}/lserializing_Version.h")
+
+configure_file ("${CMAKE_CURRENT_LIST_DIR}/cmake/version.in" "${version_header}" @ONLY
+				NEWLINE_STYLE UNIX)
+
 target_sources (lserializing # PUBLIC "${public_header}"
-				PRIVATE ${private_headers} "${export_header}")
+				PRIVATE ${private_headers} "${export_header}" "${version_header}")
 
 target_include_directories (
 	lserializing
@@ -95,7 +102,7 @@ target_include_directories (
 		   $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/generated>
 		   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
-install (FILES "${public_header}" "${export_header}" ${private_headers}
+install (FILES "${public_header}" "${export_header}" "${version_header}" ${private_headers}
 		 DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/lserializing" COMPONENT lserializing_dev)
 
 if (WIN32)
