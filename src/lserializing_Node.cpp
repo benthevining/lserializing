@@ -19,8 +19,8 @@
 #include <stdexcept>
 #include "lserializing/lserializing_Node.h"
 #include "lserializing/lserializing_SerializableData.h"
-//#include "lserializing/lserializing_SerializingFormat.h"
-//#include "lserializing/lserializing_KnownFormats.h"
+// #include "lserializing/lserializing_SerializingFormat.h"
+// #include "lserializing/lserializing_KnownFormats.h"
 
 namespace limes::serializing
 {
@@ -35,7 +35,7 @@ Node::Node (ObjectType typeToUse) noexcept
 		case (ObjectType::Boolean) : data = false; return;
 		case (ObjectType::Array) : data = Array {}; return;
 		case (ObjectType::Object) : data = Object {}; return;
-		case (ObjectType::Null): return;
+		case (ObjectType::Null) : return;
 	}
 }
 
@@ -82,7 +82,7 @@ std::string_view Node::getTypeAsString() const noexcept
 		case (ObjectType::Boolean) : return "Boolean";
 		case (ObjectType::String) : return "String";
 		case (ObjectType::Number) : return "Number";
-		default: return ""; // unreachable
+		default : return "";  // unreachable
 	}
 }
 
@@ -112,12 +112,12 @@ const Node& Node::operator[] (std::string_view childName) const
 
 Node& Node::operator[] (const char* childName)
 {
-	return this->operator[](std::string_view { childName });
+	return this->operator[] (std::string_view { childName });
 }
 
 const Node& Node::operator[] (const char* childName) const
 {
-	return this->operator[](std::string_view { childName });
+	return this->operator[] (std::string_view { childName });
 }
 
 Node& Node::operator[] (size_t idx)
@@ -318,7 +318,7 @@ Node& Node::addChildString (std::string_view childName)
 
 Node& Node::addChildString (std::string_view value, std::string_view childName)
 {
-	auto& child = addChildString (childName);
+	auto& child		  = addChildString (childName);
 	child.getString() = value;
 	return child;
 }
@@ -590,10 +590,10 @@ size_t hash<limes::serializing::Node>::operator() (const limes::serializing::Nod
 {
 	namespace Serial = limes::serializing;
 
-//	return hash<string> {}(Serial::KnownFormats::get()
-//							   .getFormatForString (Serial::formats::JSON)
-//							   ->createPrinter (false)
-//							   ->print (n));
+	//	return hash<string> {}(Serial::KnownFormats::get()
+	//							   .getFormatForString (Serial::formats::JSON)
+	//							   ->createPrinter (false)
+	//							   ->print (n));
 
 	return 0UL;
 }
