@@ -10,37 +10,17 @@
 #
 # ======================================================================================
 
-include (FetchContent)
-
-FetchContent_Declare (
-	Catch2
-	GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-	GIT_TAG origin/devel
-	GIT_SHALLOW ON
-	FIND_PACKAGE_ARGS 3 GLOBAL)
-
-FetchContent_MakeAvailable (Catch2)
-
-if (catch2_SOURCE_DIR)
-	list (APPEND CMAKE_MODULE_PATH "${catch2_SOURCE_DIR}/extras")
-endif ()
-
-include (Catch)
+limes_get_catch2 ()
 
 add_executable (lserial_tests)
 
-set_target_properties (lserial_tests PROPERTIES MACOSX_BUNDLE OFF)
-
 target_sources (lserial_tests PRIVATE Node.cpp Concepts.cpp Enums.cpp)
 
-target_link_libraries (lserial_tests PRIVATE Catch2::Catch2WithMain limes::lserializing)
+target_link_libraries (lserial_tests PRIVATE limes::lserializing)
 
-# cmake-format: off
-catch_discover_tests (
+limes_configure_test_target (
 	lserial_tests
-	EXTRA_ARGS
-		--warn NoAssertions
-		--order rand
-		--verbosity high
-	TEST_PREFIX "Limes.serializing.unit.")
-# cmake-format: on
+	BUNDLE_ID Limes.lserializing.tests
+	VERSION_MAJOR "${lserializing_VERSION_MAJOR}"
+	FULL_VERSION "${lserializing_VERSION}"
+	TEST_CATEGORY serializing)

@@ -19,17 +19,18 @@ project (
 	DESCRIPTION "C++ serializing library"
 	HOMEPAGE_URL "https://github.com/benthevining/lserializing/")
 
-set_property (DIRECTORY APPEND PROPERTY LABELS lserializing)
+add_subdirectory (linfra)
+
+limes_default_project_options ()
+
+option (LSERIAL_TESTS "Build the lserializing tests" "${lserializing_IS_TOP_LEVEL}")
+
+option (LSERIAL_DOCS "Build the lserializing docs" "${lserializing_IS_TOP_LEVEL}")
 
 include (CMakeDependentOption)
 
-cmake_dependent_option (LSERIAL_TESTS "Build the lserializing tests" "${lserializing_IS_TOP_LEVEL}"
-						"NOT IOS" OFF)
-
 cmake_dependent_option (LSERIAL_CLI "Build the lserializing CLI app" "${lserializing_IS_TOP_LEVEL}"
 						"NOT IOS" OFF)
-
-option (LSERIAL_DOCS "Build the lserializing docs" "${lserializing_IS_TOP_LEVEL}")
 
 include (GNUInstallDirs)
 
@@ -37,22 +38,6 @@ set (LSERIAL_INSTALL_DEST "${CMAKE_INSTALL_LIBDIR}/cmake/lserializing"
 	 CACHE STRING "Path where package files will be installed, relative to the install prefix")
 
 mark_as_advanced (LSERIAL_INSTALL_DEST LSERIAL_TESTS LHASH_DOCS LSERIAL_CLI)
-
-set_property (DIRECTORY APPEND PROPERTY ADDITIONAL_CLEAN_FILES "${CMAKE_CURRENT_LIST_DIR}/logs"
-										"${CMAKE_CURRENT_LIST_DIR}/deploy")
-
-# use the directory-scoped commands so that Catch2 gets these flags too
-if (EMSCRIPTEN)
-	add_compile_options (-sNO_DISABLE_EXCEPTION_CATCHING -fexceptions)
-	add_link_options (-fexceptions)
-endif ()
-
-set (CMAKE_CXX_VISIBILITY_PRESET hidden)
-set (CMAKE_VISIBILITY_INLINES_HIDDEN ON)
-
-set (CMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED "NO")
-set (CMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED "NO")
-set (CMAKE_XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "")
 
 add_library (lserializing)
 add_library (limes::lserializing ALIAS lserializing)
