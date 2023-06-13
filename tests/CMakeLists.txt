@@ -19,8 +19,8 @@ target_sources (lserial_tests PRIVATE Node.cpp Concepts.cpp Enums.cpp)
 target_link_libraries (lserial_tests PRIVATE limes::lserializing)
 
 limes_configure_test_target (
-	lserial_tests
-	BUNDLE_ID Limes.lserializing.tests
-	VERSION_MAJOR "${lserializing_VERSION_MAJOR}"
-	FULL_VERSION "${lserializing_VERSION}"
-	TEST_CATEGORY serializing)
+    lserial_tests
+    BUNDLE_ID Limes.lserializing.tests
+    VERSION_MAJOR "${lserializing_VERSION_MAJOR}"
+    FULL_VERSION "${lserializing_VERSION}"
+    TEST_PREFIX limes.serializing.unit.)
