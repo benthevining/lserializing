@@ -50,7 +50,7 @@ set_target_properties (lserializing PROPERTIES DEBUG_POSTFIX -d VERSION "${lseri
 set (public_header include/lserializing/lserializing.h)
 
 set (
-    private_headers
+    util_headers
     include/lserializing/lserializing_Enums.h
     include/lserializing/lserializing_KnownFormats.h
     include/lserializing/lserializing_Node.h
@@ -79,7 +79,7 @@ configure_file ("${CMAKE_CURRENT_LIST_DIR}/cmake/version.in" "${version_header}"
                 NEWLINE_STYLE UNIX)
 
 target_sources (lserializing # PUBLIC "${public_header}"
-                PRIVATE ${private_headers} "${export_header}" "${version_header}")
+                PRIVATE ${util_headers} "${export_header}" "${version_header}")
 
 target_include_directories (
     lserializing
@@ -87,14 +87,24 @@ target_include_directories (
            $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/generated>
            $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
-install (FILES "${public_header}" "${export_header}" "${version_header}" ${private_headers}
+install (FILES "${public_header}" "${export_header}" "${version_header}" ${util_headers}
          DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/lserializing" COMPONENT lserializing_dev)
 
 if (WIN32)
     target_compile_definitions (lserializing PRIVATE NOMINMAX)
 endif ()
 
-add_subdirectory (src)
+set (
+    util_sources
+    # lserializing_Formats.cpp # lserializing_INI.cpp lserializing_JSON.cpp
+    # lserializing_KnownFormats.cpp
+    src/lserializing_Node.cpp
+    # lserializing_Printer.cpp lserializing_TOML.cpp lserializing_XML.cpp lserializing_YAML.cpp
+    )
+
+target_sources (lserializing PRIVATE ${util_sources})
+
+source_group (util FILES ${util_headers} ${util_sources})
 
 if (LSERIAL_CLI)
     add_subdirectory (cli)
